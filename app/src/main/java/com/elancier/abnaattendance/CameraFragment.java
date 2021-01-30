@@ -103,7 +103,8 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback, 
 
         final View topCoverView = view.findViewById(com.desmond.squarecamera.R.id.cover_top_view);
         final View btnCoverView = view.findViewById(com.desmond.squarecamera.R.id.cover_bottom_view);
-
+        final ImageView change_camera = view.findViewById(com.desmond.squarecamera.R.id.change_camera);
+        change_camera.setVisibility(View.VISIBLE);
         mImageParameters.mIsPortrait =
                 getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT;
 

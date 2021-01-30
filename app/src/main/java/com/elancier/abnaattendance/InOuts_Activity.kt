@@ -165,13 +165,6 @@ class InOuts_Activity : AppCompatActivity() {
         override fun onPreExecute() {
             // array.clear()
             //today_array.clear()
-           /* pDialo = ProgressDialog(activity);
-            pDialo.setMessage("Please wait...");
-            pDialo.setIndeterminate(false);
-            pDialo.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-            pDialo.setCancelable(false);
-            //pDialo.setMax(3)
-            pDialo.show()*/
 
             if(start==0) {
                 recycler.visibility=View.INVISIBLE
@@ -245,7 +238,7 @@ class InOuts_Activity : AppCompatActivity() {
                         shimmer_view_container.visibility = View.GONE
                         shimmer_view_container.stopShimmer()
                         progressBar7.visibility = View.GONE
-
+                        loading=true
                         adp = All_Daily_Report_Adapter(activity!!, today_array)
                         recycler!!.adapter = adp
                         if(start!=0) {
@@ -261,19 +254,32 @@ class InOuts_Activity : AppCompatActivity() {
                        // pDialo.dismiss()
                         shimmer_view_container.visibility= View.GONE
                         shimmer_view_container.stopShimmer()
-                        nodata.visibility=View.VISIBLE
-                        progressBar7.visibility = View.GONE
 
-                        recycler.visibility=View.INVISIBLE
+                        if(start==0) {
+                            nodata.visibility = View.VISIBLE
+                            recycler.visibility=View.INVISIBLE
+                            progressBar7.visibility = View.GONE
+                        }
+                        else{
+                            progressBar7.visibility = View.GONE
+
+                        }
+
                         Toast.makeText(activity, obj1.getString("Response"), Toast.LENGTH_SHORT).show()
                     }
                 } else {
                    // pDialo.dismiss()
                     shimmer_view_container.visibility= View.GONE
                     shimmer_view_container.stopShimmer()
-                    nodata.visibility=View.VISIBLE
-                    progressBar7.visibility = View.GONE
-                    recycler.visibility=View.INVISIBLE
+                    if(start==0) {
+                        nodata.visibility = View.VISIBLE
+                        recycler.visibility=View.INVISIBLE
+                        progressBar7.visibility = View.GONE
+                    }
+                    else{
+                        progressBar7.visibility = View.GONE
+
+                    }
 
                 }
             } catch (e: Exception) {

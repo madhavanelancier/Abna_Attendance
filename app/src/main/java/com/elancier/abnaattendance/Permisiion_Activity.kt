@@ -103,7 +103,6 @@ class Permisiion_Activity : AppCompatActivity() {
                         limit=10
                         Get_todayreport().execute(utils!!.getid(),textView3.text.toString(),textView4.text.toString(),start.toString(),
                                 limit.toString())
-
                     },
                     mYear,
                     mMonth,
@@ -254,6 +253,7 @@ class Permisiion_Activity : AppCompatActivity() {
                         shimmer_view_container.visibility= View.GONE
                         shimmer_view_container.stopShimmer()
                         progressBar7.visibility = View.GONE
+                        loading=true
 
                         adp = Permission_Report_Adapter(activity!!, today_array)
                         recycler!!.adapter = adp
@@ -263,20 +263,30 @@ class Permisiion_Activity : AppCompatActivity() {
                         //pDialo.dismiss()
                         shimmer_view_container.visibility= View.GONE
                         shimmer_view_container.stopShimmer()
-                        nodata.visibility=View.VISIBLE
-                        progressBar7.visibility = View.GONE
+                        if(start==0) {
+                            nodata.visibility = View.VISIBLE
+                            recycler.visibility=View.INVISIBLE
+                            progressBar7.visibility = View.GONE
+                        }
+                        else{
+                            progressBar7.visibility = View.GONE
 
-                        recycler.visibility=View.INVISIBLE
+                        }
                         Toast.makeText(activity, obj1.getString("Response"), Toast.LENGTH_SHORT).show()
                     }
                 } else {
                     //pDialo.dismiss()
                     shimmer_view_container.visibility= View.GONE
                     shimmer_view_container.stopShimmer()
-                    nodata.visibility=View.VISIBLE
-                    progressBar7.visibility = View.GONE
+                    if(start==0) {
+                        nodata.visibility = View.VISIBLE
+                        recycler.visibility=View.INVISIBLE
+                        progressBar7.visibility = View.GONE
+                    }
+                    else{
+                        progressBar7.visibility = View.GONE
 
-                    recycler.visibility=View.INVISIBLE
+                    }
 
                 }
             } catch (e: Exception) {

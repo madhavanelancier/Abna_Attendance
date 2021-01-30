@@ -529,6 +529,7 @@ class Report_fragment : Fragment() {
                         shimmer!!.stopShimmer()
                         recycler1!!.visibility=View.VISIBLE
                         nodata!!.visibility=View.GONE
+                        loading=true
                         progressBar7!!.visibility=View.GONE
                         adp1!!.notifyDataSetChanged()
 
