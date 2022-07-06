@@ -14,9 +14,12 @@
         android:usesCleartextTraffic="true"
         tools:replace="android:theme">
         <activity android:name=".InOuts_Activity"
-            android:theme="@style/Theme.Design"></activity>
+            android:theme="@style/Theme.Design">
 
-        <activity android:name=".LoginActivity">
+        </activity>
+
+        <activity android:name=".LoginActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -38,6 +41,8 @@
             android:theme="@style/Theme.Design.NoActionBar"/>
         <activity android:name=".Salary_Details"
             android:theme="@style/Theme.Design.NoActionBar"/>
+        <activity android:name=".Apply_Leave"
+            android:theme="@style/Theme.Design.NoActionBar" />
 
         <provider
             android:name=".GenericFileProvider"
@@ -51,7 +56,8 @@
 
         <receiver
             android:name=".ConnectivityReceiver"
-            android:enabled="true">
+            android:enabled="true"
+            android:exported="false">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
                 <action android:name="android.net.wifi.WIFI_STATE_CHANGED" />

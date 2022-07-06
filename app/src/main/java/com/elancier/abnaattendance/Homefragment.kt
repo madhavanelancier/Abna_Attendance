@@ -174,6 +174,7 @@ class Homefragment : Fragment() {
         val logout=view.findViewById<CardView>(R.id.c2);
         val incard=view.findViewById<CardView>(R.id.incard)
         val permssioncard=view.findViewById<CardView>(R.id.permssioncard)
+        val leavecard=view.findViewById<CardView>(R.id.leavecard)
         val cur_salary=view.findViewById<TextView>(R.id.cur_salary)
          today_dt=view.findViewById<TextView>(R.id.today_dt)
         today_no=view.findViewById<TextView>(R.id.today_noreport)
@@ -205,6 +206,10 @@ class Homefragment : Fragment() {
 
         permssioncard.setOnClickListener {
             startActivity(Intent(activity!!, Permisiion_Activity::class.java))
+        }
+        leavecard.setOnClickListener {
+            startActivity(Intent(activity!!, Apply_Leave::class.java))
+
         }
 
        // statusCheck()
