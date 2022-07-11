@@ -208,7 +208,7 @@ class Homefragment : Fragment() {
             startActivity(Intent(activity!!, Permisiion_Activity::class.java))
         }
         leavecard.setOnClickListener {
-            startActivity(Intent(activity!!, Apply_Leave::class.java))
+            startActivity(Intent(activity!!, LeavesList_Activity::class.java))
 
         }
 

@@ -75,10 +75,11 @@
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/spacing_medium"
                     android:layout_marginLeft="@dimen/spacing_middle"
                     android:layout_marginRight="@dimen/spacing_middle"
+                    android:layout_marginBottom="@dimen/spacing_medium"
                     android:clipToPadding="false"
+                    android:visibility="visible"
                     app:cardBackgroundColor="@android:color/white"
                     app:cardCornerRadius="1dp"
                     app:cardElevation="2dp">
@@ -105,13 +106,12 @@
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:background="@android:color/transparent"
-                            android:focusable="false"
-                            android:textColor="@color/colorPrimary"
-                            android:hint="Leave Date"
+                            android:hint="How many days?"
                             android:imeOptions="actionSearch"
-
                             android:maxLines="1"
+
                             android:singleLine="true"
+                            android:textColor="@color/colorPrimary"
                             android:textColorHint="@color/blue_grey_400">
 
                             <!--<requestFocus />-->
@@ -123,8 +123,7 @@
                             android:layout_height="?attr/actionBarSize"
                             android:background="@android:color/transparent"
                             android:clickable="true"
-                            android:tint="@color/grey_40"
-                            />
+                            android:tint="@color/grey_40" />
 
                     </LinearLayout>
 
@@ -165,11 +164,11 @@
                             android:layout_weight="1"
                             android:background="@android:color/transparent"
                             android:focusable="false"
-                            android:hint="From time"
-                            android:textColor="@color/colorPrimary"
-
+                            android:hint="From Date"
                             android:maxLines="1"
+
                             android:singleLine="true"
+                            android:textColor="@color/colorPrimary"
                             android:textColorHint="@color/grey_500">
 
                             <!--<requestFocus />-->
@@ -193,12 +192,14 @@
                     android:layout_height="@dimen/spacing_small" />
 
                 <androidx.cardview.widget.CardView
+                    android:id="@+id/tocard"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/spacing_medium"
                     android:layout_marginLeft="@dimen/spacing_middle"
                     android:layout_marginRight="@dimen/spacing_middle"
+                    android:layout_marginBottom="@dimen/spacing_medium"
                     android:clipToPadding="false"
+                    android:visibility="gone"
                     app:cardBackgroundColor="@android:color/white"
                     app:cardCornerRadius="1dp"
                     app:cardElevation="2dp">
@@ -226,11 +227,11 @@
                             android:layout_weight="1"
                             android:background="@android:color/transparent"
                             android:focusable="false"
-                            android:hint="To time"
+                            android:hint="To Date"
                             android:maxLines="1"
-                            android:textColor="@color/colorPrimary"
-
                             android:singleLine="true"
+
+                            android:textColor="@color/colorPrimary"
                             android:textColorHint="@color/grey_500" />
 
                         <ImageButton
@@ -238,8 +239,7 @@
                             android:layout_height="?attr/actionBarSize"
                             android:background="@android:color/transparent"
                             android:clickable="true"
-                            android:tint="@color/grey_40"
-                             />
+                            android:tint="@color/grey_40" />
 
                     </LinearLayout>
 

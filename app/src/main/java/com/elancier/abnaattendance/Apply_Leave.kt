@@ -7,9 +7,12 @@ import android.content.Context
 import android.content.SyncRequest
 import android.os.AsyncTask
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.Gravity
 import android.view.MenuItem
+import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
 import android.widget.Toast
@@ -54,34 +57,69 @@ class Apply_Leave : AppCompatActivity() {
         utils=Utils(this)
 
         var arr=ArrayList<String>()
-        arr.add("Select DD")
-        arr.add("Full Leave")
-        arr.add("Half Leave")
-        arr.add("Quarter Leave")
+        arr.add("Select Leave")
+        arr.add("Quarter day")
+        arr.add("Half day")
+        arr.add("3/4th day")
+        arr.add("Full day")
         val customAdapter = CustomeSpinner(activity, arr as java.util.ArrayList<String>)
         ddselect.adapter = customAdapter
 
-        pdate.setOnClickListener {
-            val datePickerDialog = DatePickerDialog(
-                    this,
-                    { view, year, monthOfYear, dayOfMonth -> pdate.setText(dayOfMonth.toString() + "-" + (monthOfYear + 1) + "-" + year) },
-                    mYear,
-                    mMonth,
-                    mDay
-            )
-            datePickerDialog.datePicker.minDate=System.currentTimeMillis()
-            datePickerDialog.show()
-        }
+
+        pdate.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+
+                if(s!!.length>0) {
+                    if (s.toString().equals("1") || s.toString().equals("0")) {
+                        tocard.visibility = View.GONE
+                    } else {
+                        tocard.visibility = View.VISIBLE
+
+                    }
+                }
+                else{
+                    tocard.visibility = View.GONE
+                }
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+            }
+
+            override fun onTextChanged(s: CharSequence?, star: Int, before: Int, count: Int) {
+
+            }
+        })
+
+
+
+
 
         imageButton.setOnClickListener {
             finish()
         }
 
         signin.setOnClickListener {
-            if(pdate.text.toString().isNotEmpty()&&ftime.text.toString().isNotEmpty()
-                    &&todates.text.toString().isNotEmpty()){
-                UpdateInfoTask().execute(utils!!.getid(), pdate.text.toString(),
-                        ftime.text.toString(), todates.text.toString(), hrs + "," + minutes, reason.text.toString())
+            if(pdate.text.toString().isNotEmpty()&&ftime.text.toString().isNotEmpty()&&
+                ddselect.selectedItemPosition!=0){
+                if(tocard.visibility==View.VISIBLE){
+                    if(todates.text.toString().isNotEmpty()){
+                        UpdateInfoTask().execute(utils!!.getid(),ftime.text.toString(),
+                            todates.text.toString(), ddselect.selectedItem.toString(),
+                            reason.text.toString(),pdate.text.toString())
+                    }
+                    else{
+                        if(todates.text.toString().isEmpty()){
+                            todates.setError("Required field")
+                        }
+                    }
+                }
+                else{
+                    UpdateInfoTask().execute(utils!!.getid(),ftime.text.toString(),
+                        todates.text.toString(), ddselect.selectedItem.toString(),
+                        reason.text.toString(),pdate.text.toString())
+                }
+
             }
             else{
                 if(pdate.text.toString().isEmpty()){
@@ -90,108 +128,57 @@ class Apply_Leave : AppCompatActivity() {
                 if(ftime.text.toString().isEmpty()){
                     ftime.setError("Required field")
                 }
-                if(todates.text.toString().isEmpty()){
-                    todates.setError("Required field")
+                if(ddselect.selectedItemPosition==0){
+                    toast("Please select leave")
                 }
+
             }
         }
 
         ftime.setOnClickListener {
 
             if(pdate.text.toString().isNotEmpty()) {
-                calendar = Calendar.getInstance();
-                CalendarHour = calendar!!.get(Calendar.HOUR_OF_DAY);
-                CalendarMinute = calendar!!.get(Calendar.MINUTE);
-                timepickerdialog = RangeTimePickerDialog(this@Apply_Leave,
-                    { v, hourOfDay, minute ->
-                        var hourOfDay = hourOfDay
-                        if (hourOfDay == 0) {
-                            hourOfDay += 12
-                            format = " AM"
-                        } else if (hourOfDay == 12) {
-                            format = " PM"
-                        } else if (hourOfDay > 12) {
-                            hourOfDay -= 12
-                            format = " PM"
-                        } else {
-                            format = " AM"
-                        }
-                        if (hourOfDay <= 9 || minute <= 9) {
-                            if (hourOfDay <= 9 && minute <= 9) {
-                                ftime.setText("0$hourOfDay:0$minute$format")
-                            } else if (hourOfDay <= 9 && minute > 9) {
-                                ftime.setText("0$hourOfDay:$minute$format")
-                            } else if (hourOfDay > 9 && minute <= 9) {
-                                ftime.setText("$hourOfDay:0$minute$format")
-                            }
-
-                        } else {
-                            ftime.setText("$hourOfDay:$minute$format")
-
-                        }
-                    }, CalendarHour, CalendarMinute, false
+                val datePickerDialog = DatePickerDialog(
+                    this,
+                    { view, year, monthOfYear, dayOfMonth -> ftime.setText(dayOfMonth.toString() + "-" + (monthOfYear + 1) + "-" + year) },
+                    mYear,
+                    mMonth,
+                    mDay
                 )
-
-                val cal=Calendar.getInstance()
-                val format=SimpleDateFormat("dd-MM-yyyy")
-                val dates=format.format(cal.time)
-
-                if(pdate.text.toString()==dates) {
-                    timepickerdialog!!.setMin(CalendarHour, CalendarMinute)
-                }
-
-                timepickerdialog!!.show()
+                datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
+                datePickerDialog.show()
             }
             else{
-                toast("Please select date")
+                toast("Please fill days")
+                pdate.setError("Required field")
+
             }
         }
 
 
         todates.setOnClickListener {
             if(pdate.text.toString().isNotEmpty()) {
-                calendar = Calendar.getInstance();
-                CalendarHour = calendar!!.get(Calendar.HOUR_OF_DAY);
-                CalendarMinute = calendar!!.get(Calendar.MINUTE);
-                timepickerdialog = RangeTimePickerDialog(this@Apply_Leave,
-                    { view, hourOfDay, minute ->
-                        var hourOfDay = hourOfDay
-                        if (hourOfDay == 0) {
-                            hourOfDay += 12
-                            format = " AM"
-                        } else if (hourOfDay == 12) {
-                            format = " PM"
-                        } else if (hourOfDay > 12) {
-                            hourOfDay -= 12
-                            format = " PM"
-                        } else {
-                            format = " AM"
-                        }
-                        if (hourOfDay <= 9 || minute <= 9) {
-                            if (hourOfDay <= 9 && minute <= 9) {
-                                todates.setText("0$hourOfDay:0$minute$format")
-                            } else if (hourOfDay <= 9 && minute > 9) {
-                                todates.setText("0$hourOfDay:$minute$format")
-                            } else if (hourOfDay > 9 && minute <= 9) {
-                                todates.setText("$hourOfDay:0$minute$format")
-                            }
-                        } else {
-                            todates.setText("$hourOfDay:$minute$format")
-                        }
-
-                        calculate()
-                    }, CalendarHour, CalendarMinute, false
+                val datePickerDialog = DatePickerDialog(
+                    this,
+                    { view, year, monthOfYear, dayOfMonth -> todates.setText(dayOfMonth.toString() + "-" + (monthOfYear + 1) + "-" + year) },
+                    mYear,
+                    mMonth,
+                    mDay
                 )
-                timepickerdialog!!.show()
+                datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
+                datePickerDialog.show()
             }
             else{
-                toast("Please select date")
+                toast("Please fill days")
+                pdate.setError("Required field")
             }
         }
         reason.setFocusable(true)
         reason.requestFocus()
         val imm: InputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.showSoftInput(reason, InputMethodManager.SHOW_IMPLICIT)
+
+
 
 
 
@@ -250,14 +237,15 @@ class Apply_Leave : AppCompatActivity() {
 
                 val json= JSONObject()
                 json.put("user_id", params[0])
-                json.put("date", params[1])
-                json.put("start_time", params[2])
-                json.put("end_time", params[3])
-                json.put("total_hours", params[4])
-                json.put("remarks", params[5])
+                json.put("from_date", params[1])
+                json.put("to_date", params[2])
+                json.put("type", params[3])
+                json.put("reason", params[4])
+                json.put("types", "add")
+                json.put("days", params[5])
 
                 result = con.sendHttpPostjson(
-                        Appconstands.Domin + "permission.php",
+                        Appconstands.Domin + "leaveRequest.php",
                         json
                 )
                 Log.e("input", json.toString())
@@ -279,7 +267,7 @@ class Apply_Leave : AppCompatActivity() {
                     val obj1 = json.getJSONObject(0)
                     if (obj1.getString("Status") == "Success") {
                         pDialo!!.dismiss()
-                        toast("Permission Added Successfully.")
+                        toast("Leave applied Successfully.")
                         finish()
 
                     } else {
